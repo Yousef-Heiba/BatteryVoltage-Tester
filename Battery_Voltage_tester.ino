@@ -31,13 +31,13 @@ byte fullRightEnd[] = {
   B11110, B00010, B11111, B11111, B11111, B11111, B00010, B11110
 };
 
-
 int batteryPin = A0;
 float batteryThreshold = 0.9;
 float voltageRef = 3.3;
 float voltageBattery;
 float batteryBar;
 int ledPin = 8;
+
 void setup() {
   analogReference(EXTERNAL);
   lcd.begin(16, 2);
@@ -45,7 +45,7 @@ void setup() {
   lcd.print("Battery Tester");
   lcd.setCursor(2, 1);
   lcd.print("By:Yousef A.");
-  delay(500);
+  delay(1000);
   lcd.clear();
   lcd.createChar(0, emptyLeftEnd);
   lcd.createChar(1, fullLeftEnd);
