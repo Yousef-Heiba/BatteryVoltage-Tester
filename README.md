@@ -23,7 +23,7 @@ The system can be used to test common batteries (AA, AAA, etc.) safely within th
 ## 📸 Built Circuit
 Below is the physical implementation of the circuit used in this project:
 
-![Built Circuit](images/circuit.png)
+![Built Circuit](circuit.jpg)
 
 > **Note:** The battery under test is connected through a voltage divider to protect the Arduino’s analog input.
 
