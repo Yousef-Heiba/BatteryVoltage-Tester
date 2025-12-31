@@ -29,23 +29,80 @@ Below is the physical implementation of the circuit used in this project:
 
 ---
 
-## ⚡ How It Works
-1. The battery voltage is passed through a **voltage divider** to ensure it stays below 5V.
-2. The Arduino reads the scaled voltage using `analogRead()`.
-3. The raw ADC value is converted into a real voltage.
-4. The voltage is mapped to an estimated **percentage charge**.
-5. The LCD displays:
-   - Battery voltage
-   - Charge percentage
-   - A visual bar indicator
+## ❗ The Problem with Standard Multimeters
+
+Many people use a standard multimeter to check battery health, but this method is often **misleading**.
+
+A multimeter measures battery voltage under **no-load conditions**. In this state, even a nearly depleted battery can still show a relatively high voltage, giving the false impression that it is healthy.
+
+For a **reliable assessment**, a battery must be measured **while it is supplying current (under load)**. Only then does the voltage drop reveal the true condition of the battery.
 
 ---
 
-## 🧠 Code Overview
-- Uses the `LiquidCrystal` library for LCD control
-- Converts ADC values using Arduino’s 10-bit resolution
-- Simple math-based voltage calibration
-- Dynamic LCD updates for real-time feedback
+## ⚙️ How the Circuit Works
+
+The core of this battery tester is a **constant current load circuit**, which ensures that the battery is tested under consistent and repeatable conditions, regardless of its voltage level.
+
+### Constant Current Load
+
+#### Operational Amplifier (LM358)
+One amplifier inside the **LM358** op-amp is used to regulate the load current.  
+It continuously adjusts the transistor drive to keep the current constant as the battery voltage changes.
+
+#### Voltage Divider (R1 & R2)
+Resistors **R1** and **R2** form a voltage divider that sets a reference voltage of approximately **450 mV** at the op-amp’s non-inverting input.
+
+This reference voltage determines the target current flowing through the load.
+
+#### Transistor (BD139)
+The op-amp controls the base of an **NPN transistor (BD139)**.  
+By increasing or decreasing the base current, the op-amp regulates how much current flows from the battery through the load resistor.
+
+#### Load Resistor (R3)
+The load resistor sets the test current according to Ohm’s Law: I = V / R
+
+- With a **3.9 Ω** resistor, the test current is approximately **116 mA**
+- Replacing it with a **1.8 Ω** resistor increases the current to roughly **250 mA**
+
+This allows the tester to simulate different load conditions depending on the battery type.
+
+#### Transistor Options
+While the prototype uses a **BD139**, other NPN transistors such as:
+- **BC337**
+- **2N2222**
+
+can also be used, provided they can safely handle the test current.
+
+---
+
+## 🧠 Arduino Integration and Display
+
+### Voltage Measurement
+The Arduino measures the battery voltage using **analog pin A0** while the battery is under load, providing a much more realistic reading than a multimeter.
+
+### Increased ADC Resolution
+To improve measurement accuracy at low voltages, the Arduino’s **3.3V pin is connected to the AREF pin**.  
+This configures the ADC to use **3.3V as the reference voltage** instead of the default 5V, increasing resolution for single-cell batteries.
+
+### LCD Display
+A **16×2 LCD** connected via **I2C** displays:
+- The measured battery voltage
+- A graphical progress bar representing battery health
+
+This makes the tester easy to read and user-friendly.
+
+---
+
+## 🧪 Software and Customization
+
+The firmware can be uploaded using the **Arduino IDE** and is designed to be easily customizable.
+
+### Adjustable Parameters
+- **I2C Address**  
+  The LCD I2C address can be changed in the code (commonly `0x27` or `0x3F`).
+
+- **Discharge Voltage Threshold**  
+  The default voltage threshold for a “discharged” battery is set to **1.1V**, but this value can be modified to suit different battery chemistries.
 
 ---
 
