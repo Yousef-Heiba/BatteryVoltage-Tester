@@ -41,4 +41,39 @@ Below is the physical implementation of the circuit used in this project:
 
 ---
 
-## 📟 LCD Output Example
+## 🧠 Code Overview
+- Uses the `LiquidCrystal` library for LCD control
+- Converts ADC values using Arduino’s 10-bit resolution
+- Simple math-based voltage calibration
+- Dynamic LCD updates for real-time feedback
+
+---
+
+## 🧪 Calibration Notes
+- Voltage divider resistor values must match those used in the code
+- ADC reference voltage is assumed to be **5.0V**
+- Battery percentage is an **approximation**, intended for learning purposes
+
+---
+
+## 🚀 Possible Improvements
+- Automatic battery type detection
+- OLED display support
+- EEPROM-based calibration storage
+- Battery health and discharge curve tracking
+- Over-voltage protection circuitry
+
+---
+
+## 🎓 Educational Value
+This project is ideal for:
+- Learning Arduino analog inputs
+- Understanding voltage dividers
+- Practicing LCD interfacing
+- Introductory embedded systems projects
+
+---
+
+## 📄 License
+This project is open-source and available under the **MIT License**.
+
